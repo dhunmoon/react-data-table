@@ -152,6 +152,7 @@ export const  DataTable = (props) => {
             //@optimization: Move shorting to a different section as shorting is not dependent on filtering data.
             if(shortingState.key && shortingState.type){
                 newState = newState.sort((oldVal, newVal)=> {
+                    //Sometimes oldVal[shortingState.key] and newVal[shortingState.key] can be object or array so in that case 
                     if(shortingState.type == 'asc'){
                         return oldVal[shortingState.key] > newVal[shortingState.key] ? 1 : -1;
                     }else{
@@ -164,7 +165,7 @@ export const  DataTable = (props) => {
                 var FYCol = options.haveFyFilter === true ? 'FY' : options.haveFyFilter ? options.haveFyFilter : undefined;
                 newState = props.data.filter((item) => {
                     var _ret = {...item};
-                    if(sideFilterState.key !== 'All')
+                    if(sideFilterState.key !== 'All')//this value is hard coded so no need to be worried.
                         return sideFilterState.key === _ret[FYCol];
                     else
                         return true;
@@ -332,6 +333,7 @@ export const  DataTable = (props) => {
     //TODO: Update FY Filter list so that that can get applied before applying other filters.
     const fyFilter = (_,val) => {
         //just update the FY Filter Column and useEffect which is watching the value will update the filter on the table.
+        //TODO: pass the function to resolve the filtering value when there are nested functions.
         updateSideFilterState({...val});
     }
 
@@ -351,7 +353,7 @@ export const  DataTable = (props) => {
                     updateShortingState({
                         key: col,
                         type: _temp.shorting,
-                        value: item.value
+                        value: item.value,//this ia a function which an be used to resolve the value which we want to use to resolve when we are shorting it.
                     });
                 }else{//reset all other columns to true or false, which means reset those values to true or false.
                     if(_temp.shorting){
@@ -364,9 +366,6 @@ export const  DataTable = (props) => {
             });
             return newOptions;
         })
-        //TODO: update the sorting state of the table header.
-        //TODO: update the shorting order in the options 
-        //TODO: add default ordering and provision to a
     }
 
     //Search column data.
@@ -379,7 +378,7 @@ export const  DataTable = (props) => {
         props.status == 'LOADING'  ?
         (
             <Fragment>
-                {/* {userFilters()} */}
+                {userFilters()}
                 <div>
                     {ColumnHeader()}
                     <BasicShimmer />
