@@ -12,7 +12,6 @@ Currently it is dependent on
 
 # Configuration
 
-
 ```javascript
 var sampleConfig = {
     columns: [
@@ -140,24 +139,27 @@ var sampleConfig = {
 
 1. Just passing true will use 'FY' will get filtered and unique values from the same column will be used to get values.
 ```javascript
-  haveFyFilter: true, // which means column name 'FY' will get filtered and unique values from the same column will be used to populate the filter options,
-  ```
+haveFyFilter: true, // which means column name 'FY' will get filtered and unique values from the same column will be used to populate the filter options,
+```
 
-  2. User can also pass object which will have
+2. User can also pass object which will have
 
-  This object will have information about which column to choose, what title should the column should have and values column should have and how to filter the data.
+This object will have information about which column to choose, what title should the column should have and values column should have and how to filter the data.
 
-  ```javascript
-  haveFyFilter : {
-      key: 'FY', //key which is being to apply filter
-      //if check function in not there then values will be used directly to do the check.
-      title: 'Placeholder Text',
-      check: function check(data) {
-          //apply this data check on the filter
-      }
-      values: [], //list of values to be shown in the filter. if this is not here then 
-      //or values can be a function
-      values: () => {return [];} //which will return arrays of values should be in the dropdown.
-      //values form FY column will be used to generate the list.
-  }
-  ```
+```javascript
+haveFyFilter : {
+    key: 'FY', //key which is being to apply filter
+    //if check function in not there then values will be used directly to do the check.
+    title: 'Placeholder Text',
+    check: function check(data) {
+        //apply this data check on the filter
+    }
+    values: [], //list of values to be shown in the filter. if this is not here then 
+    //or values can be a function
+    values: () => {return [];} //which will return arrays of values should be in the dropdown.
+    //values form FY column will be used to generate the list.
+    value: (cell, row) => {
+        return cell;
+    }
+}
+```
